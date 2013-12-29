@@ -8,16 +8,23 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Display;
 import com.codename1.ui.Font;
 import com.codename1.ui.Form;
-import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
+import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.plaf.UIManager;
-import com.codename1.ui.table.TableLayout;
 import com.codename1.ui.util.Resources;
 
 public class TestApplication1 {
+
+	private static final String FONT_AWESOME_NAME = "FontAwesome Regular";
+	private static final String FONT_AWESOME_FILE = "fontawesome-webfont.ttf";
+
+	private static final int FONT_SIZE = 16;
+	private static final int MIN_FONT_ID = 61440;
+	private static final int NUM_OF_COLS = 20;
+	private static final int NUM_OF_ROWS = 21;
 
 	private Form current;
 
@@ -36,30 +43,24 @@ public class TestApplication1 {
 			return;
 		}
 
-		Form form = new Form("Hi World");
+		Form form = new Form("Animated labels");
 		form.setLayout(new BorderLayout());
 
 		Font labelFont = Font.getDefaultFont();
 		if (Font.isTrueTypeFileSupported()) {
-			labelFont = Font.createTrueTypeFont("FontAwesome Regular", "fontawesome-webfont.ttf");
-			labelFont = labelFont.derive(16, Font.STYLE_PLAIN);
+			labelFont = Font.createTrueTypeFont(FONT_AWESOME_NAME, FONT_AWESOME_FILE);
+			labelFont = labelFont.derive(FONT_SIZE, Font.STYLE_PLAIN);
 		}
 
 		final Container labelContainer = new Container();
-		labelContainer.setLayout(new TableLayout(11, 40));
-		for (int i = 0; i < 407; i++) {
-			Label label = new Label(new String("" + (char) (61440 + i)));
+		labelContainer.setLayout(new GridLayout(NUM_OF_ROWS, NUM_OF_COLS));
+		for (int i = 0; i < NUM_OF_ROWS * NUM_OF_COLS; i++) {
+			Label label = new Label(new String(Character.toChars(MIN_FONT_ID + i)));
 			label.getStyle().setFont(labelFont);
 			labelContainer.addComponent(label);
 		}
 
-		Button button = new Button("Hello World!");
-		try {
-			button.setIcon(Image.createImage("/icon2.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Button button = new Button("Animate labels!");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				animateLabelContainer(labelContainer);
